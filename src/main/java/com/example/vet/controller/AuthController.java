@@ -17,23 +17,18 @@ public class AuthController {
 
     private final AuthService authService;
 
-    // CONSTRUCTOR MANUAL (Sin Lombok)
+    // Constructor manual
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(
-            @RequestBody RegisterAdminDTO request // Usamos el DTO correcto
-    ) {
-        // Llamamos al método "register" que SÍ existe en el servicio
+    public ResponseEntity<UserResponse> register(@RequestBody RegisterAdminDTO request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> authenticate(
-            @RequestBody UserLoginRequest request
-    ) {
+    public ResponseEntity<UserLoginResponse> authenticate(@RequestBody UserLoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 }
