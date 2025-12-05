@@ -1,34 +1,39 @@
 package com.example.vet.controller;
 
-import com.example.vet.service.UserService;
-// BORRA CUALQUIER IMPORT DE LOMBOK AQUÍ
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.vet.model.User;
+import com.example.vet.repository.UserRepository;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-// BORRA @RequiredArgsConstructor si lo tenías
 public class UserController {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    // CONSTRUCTOR MANUAL (Solución al error de inicialización)
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
+    // ✅ Obtener nombre por ID
     @GetMapping("/{userId}/name")
-    public ResponseEntity<String> getUsernameForClient(@PathVariable Integer userId) {
-        try {
-            // Llama al servicio para obtener el nombre
-            String username = userService.getUsernameById(userId); 
-            return ResponseEntity.ok(username);
-        } catch (RuntimeException e) {
-            // Devuelve NOT FOUND si el ID no existe
-            return ResponseEntity.notFound().build(); 
-        }
+    public String getUserName(@PathVariable Integer userId) {
+        return userRepository.findById(userId)
+                .map(User::getNombre)
+                .orElse("Usuario no encontrado");
+    }
+
+    // ✅ Listar todos los usuarios
+    @GetMapping("/all")
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    // ✅ Buscar usuario por email (útil para Feign Client)
+    @GetMapping("/by-email/{email}")
+    public User getUserByEmail(@PathVariable String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + email));
     }
 }
