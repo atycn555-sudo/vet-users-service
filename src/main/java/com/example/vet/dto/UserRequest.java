@@ -2,24 +2,20 @@ package com.example.vet.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size; // <-- Importa Size
+import jakarta.validation.constraints.Size;
 
 public class UserRequest {
 
-    @NotBlank(message = "El email no puede estar vacío")
-    @Email(message = "El formato del email es inválido")
+    @NotBlank(message = "The email cannot be empty")
+    @Email(message = "The email format is invalid")
     private String email;
     
-    @NotBlank(message = "La contraseña no puede estar vacía")
-    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
+    @NotBlank(message = "The password cannot be empty.")
+    @Size(min = 8, message = "The password must be at least 8 characters long")
     private String password;
     
-    // --- ¡CORRECCIÓN AQUÍ! ---
-    // Quitamos @NotBlank para que el rol sea opcional.
-    // El AuthService le asignará "ROLE_CLIENT" si viene vacío.
     private String role;
 
-    // Getters y Setters
     public String getEmail() {
         return email;
     }
