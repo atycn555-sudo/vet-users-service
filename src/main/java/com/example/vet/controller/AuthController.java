@@ -17,7 +17,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-    // Constructor manual
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
