@@ -16,7 +16,6 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    // ✅ Obtener nombre por ID
     @GetMapping("/{userId}/name")
     public String getUserName(@PathVariable Integer userId) {
         return userRepository.findById(userId)
@@ -24,13 +23,11 @@ public class UserController {
                 .orElse("Usuario no encontrado");
     }
 
-    // ✅ Listar todos los usuarios
     @GetMapping("/all")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // ✅ Buscar usuario por email (útil para Feign Client)
     @GetMapping("/by-email/{email}")
     public User getUserByEmail(@PathVariable String email) {
         return userRepository.findByEmail(email)
