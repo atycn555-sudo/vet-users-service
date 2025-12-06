@@ -15,14 +15,12 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Constructor manual
     public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    // Registro de usuario (devuelve UserResponse)
     public UserResponse register(RegisterAdminDTO request) {
         // Validación simple: evitar duplicados por email
         userRepository.findByEmail(request.getEmail()).ifPresent(u -> {
@@ -42,10 +40,7 @@ public class AuthService {
         return response;
     }
 
-    // Login (devuelve UserLoginResponse)
     public UserLoginResponse login(UserLoginRequest request) {
-        // En Basic Auth, Spring valida credenciales en el filtro, aquí devolvemos confirmación.
-        // Si deseas validar explícitamente, puedes verificar existencia del usuario:
         userRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + request.getEmail()));
 
