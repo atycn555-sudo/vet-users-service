@@ -1,17 +1,15 @@
 package com.example.vet.dto;
 
-import com.example.vet.model.Role; // Asegúrate de tener el enum Role
+import com.example.vet.model.Role;
 
 public class RegisterAdminDTO {
     private String nombre;
     private String email;
     private String password;
-    private Role role; // Campo para recibir el rol (ADMIN/CLIENT)
+    private Role role;
 
-    // Constructor vacío
     public RegisterAdminDTO() {} 
 
-    // --- GETTERS Y SETTERS MANUALES (OBLIGATORIOS) ---
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
