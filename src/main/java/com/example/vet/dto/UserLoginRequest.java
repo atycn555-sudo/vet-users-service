@@ -5,14 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 
 public class UserLoginRequest {
 
-    @NotBlank(message = "El email не puede estar vacío")
-    @Email(message = "El formato del email es inválido")
+    @NotBlank(message = "The email address cannot be empty.")
+    @Email(message = "The email format is invalid")
     private String email;
 
-    @NotBlank(message = "La contraseña no puede estar vacía")
+    @NotBlank(message = "The password cannot be empty.")
     private String password;
 
-    // Getters y Setters
     public String getEmail() {
         return email;
     }
