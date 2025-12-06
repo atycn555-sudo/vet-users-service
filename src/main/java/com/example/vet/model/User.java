@@ -21,7 +21,6 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    // --- CONSTRUCTORES MANUALES ---
     public User() {} 
 
     public User(String nombre, String email, String password, Role role) {
@@ -31,7 +30,6 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    // --- GETTERS Y SETTERS MANUALES ---
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -45,19 +43,14 @@ public class User implements UserDetails {
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }
 
-    // --- MÉTODOS DE USER DETAILS (FINAL) ---
-
-    // 1. Autoridades (Añade el prefijo ROLE_ para Spring Security)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name())); 
     }
 
-    // 2. Contraseña (Solo existe esta versión requerida por la interfaz)
     @Override
     public String getPassword() { return password; } 
 
-    // 3. Nombre de usuario (Usamos el email)
     @Override
     public String getUsername() { return email; } 
 
