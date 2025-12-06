@@ -27,7 +27,6 @@ public class SecurityConfig {
         this.authenticationProvider = authenticationProvider;
     }
 
-    // Endpoints públicos (no requieren autenticación)
     private static final String[] WHITE_LIST_URL = {
         "/api/auth/register",
         "/api/auth/login",
@@ -42,13 +41,9 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authenticationProvider(authenticationProvider)
             .authorizeHttpRequests(req -> req
-                // Permitir preflight CORS
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-                // Endpoints públicos
                 .requestMatchers(WHITE_LIST_URL).permitAll()
 
-                // USER + ADMIN pueden acceder a estos endpoints
                 .requestMatchers(HttpMethod.GET,
                     "/api/v1/products/**",
                     "/api/v1/services/**",
@@ -62,7 +57,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/v1/medical-history/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/medical-history/**").hasAnyRole("ADMIN", "USER")
 
-                // SOLO ADMIN
                 .requestMatchers(HttpMethod.PUT, "/api/v1/medical-history/**").hasRole("ADMIN")
                 .requestMatchers("/api/v1/products/**").hasRole("ADMIN")
                 .requestMatchers("/api/v1/services/**").hasRole("ADMIN")
@@ -70,15 +64,13 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/shifts/**").hasRole("ADMIN")
                 .requestMatchers("/api/v1/suppliers/**").hasRole("ADMIN")
 
-                // Endpoints de usuarios
-                .requestMatchers("/api/users/all").hasRole("ADMIN")          // solo admin puede listar todos
-                .requestMatchers("/api/users/by-email/**").hasRole("ADMIN")  // solo admin puede buscar por email
-                .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "USER") // acceso general a otros endpoints
+                .requestMatchers("/api/users/all").hasRole("ADMIN")
+                .requestMatchers("/api/users/by-email/**").hasRole("ADMIN")
+                .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "USER")
 
-                // DEFAULT: cualquier otro requiere autenticación
                 .anyRequest().authenticated()
             )
-            .httpBasic(Customizer.withDefaults()); // 👈 Basic Auth
+            .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
